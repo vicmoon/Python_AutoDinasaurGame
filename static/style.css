@@ -1,0 +1,13 @@
+body {
+  background-color: #7886c7;
+  columns: white;
+  display: flex;
+  justify-content: center; /* Centers horizontally */
+  align-items: center; /* Centers vertically */
+  height: 100vh; /* Makes the body take full viewport height */
+  margin: 0; /* Removes any default margins */
+}
+canvas {
+  border: 2px solid #ffd95f;
+  margin: 0 auto;
+}

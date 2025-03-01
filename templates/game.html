@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+    <title>Dino Game</title>
+  </head>
+  <body>
+    <canvas id="gameCanvas" width="800" height="300"></canvas>
+    <script>
+      // Get the canvas
+      let canvas = document.getElementById('gameCanvas');
+      let ctx = canvas.getContext('2d');
+
+      let dinoImg = new Image();
+      dinoImg.src = '/static/pixel_dino.png';
+
+      // Dinosaur object
+      let dino = {
+        x: 50,
+        y: 200,
+        width: 40,
+        height: 40,
+        velocityY: 0,
+        gravity: 1,
+        jumpPower: -15,
+        jumping: false,
+      };
+
+      // Obstacles
+      let obstacles = [];
+      let obstacleSpeed = 5;
+
+      // Jump function
+      document.addEventListener('keydown', function (event) {
+        if (event.code === 'Space' && !dino.jumping) {
+          dino.velocityY = dino.jumpPower;
+          dino.jumping = true;
+        }
+      });
+
+      // Game loop
+      let gameOver = false; // New flag to track game state
+
+      function updateGame() {
+        if (gameOver) return; // Stop the game loop if game over
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // Draw the dinosaur
+        ctx.drawImage(dinoImg, dino.x, dino.y, dino.width, dino.height);
+
+        // Apply gravity
+        dino.y += dino.velocityY;
+        dino.velocityY += dino.gravity;
+        if (dino.y > 200) {
+          dino.y = 200;
+          dino.jumping = false;
+        }
+
+        // Move and draw obstacles
+        for (let i = 0; i < obstacles.length; i++) {
+          obstacles[i].x -= obstacleSpeed;
+          ctx.fillStyle = '#D0DDD0';
+          ctx.fillRect(
+            obstacles[i].x,
+            obstacles[i].y,
+            obstacles[i].width,
+            obstacles[i].height
+          );
+
+          // Check collision only if game is still running
+          if (
+            dino.x < obstacles[i].x + obstacles[i].width &&
+            dino.x + dino.width > obstacles[i].x &&
+            dino.y < obstacles[i].y + obstacles[i].height &&
+            dino.y + dino.height > obstacles[i].y
+          ) {
+            gameOver = true; // Stop the game loop
+            setTimeout(() => {
+              alert('Game Over!');
+              document.location.reload();
+            }, 300); // Small delay to prevent spamming alerts
+            return; // Exit the function to stop further updates
+          }
+        }
+
+        obstacles = obstacles.filter((obstacle) => obstacle.x > -20);
+
+        requestAnimationFrame(updateGame);
+      }
+
+      // Generate obstacles
+      function createObstacle() {
+        let obstacle = {
+          x: 800,
+          y: 220,
+          width: 30,
+          height: 40,
+        };
+        obstacles.push(obstacle);
+        setTimeout(createObstacle, Math.random() * 2000 + 1000);
+      }
+
+      // Start the game
+      createObstacle();
+      updateGame();
+    </script>
+  </body>
+</html>

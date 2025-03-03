@@ -1,6 +1,6 @@
 body {
   background-color: #7886c7;
-  columns: white;
+
   display: flex;
   flex-direction: column;
   justify-content: center; /* Centers horizontally */
@@ -19,4 +19,6 @@ canvas {
 
 .text {
   text-align: center;
+  font-family: 'Roboto', sans-serif;
+  color: #003092;
 }

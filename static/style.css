@@ -2,6 +2,7 @@ body {
   background-color: #7886c7;
   columns: white;
   display: flex;
+  flex-direction: column;
   justify-content: center; /* Centers horizontally */
   align-items: center; /* Centers vertically */
   height: 100vh; /* Makes the body take full viewport height */
@@ -10,4 +11,12 @@ body {
 canvas {
   border: 2px solid #ffd95f;
   margin: 0 auto;
+  background-color: #e6b2ba;
+  background-image: url('background.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.text {
+  text-align: center;
 }
